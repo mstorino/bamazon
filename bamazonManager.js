@@ -16,10 +16,12 @@ connection.connect(function(err){
         console.log(err);
     } 
    
-    // if no error display products & properties
+    // if no error run function for manipulating inventory
     
     runSearch();
 });
+
+// function with four options to manipulate inventory 
 
 var runSearch = function () {
 	inquirer.prompt({
@@ -30,28 +32,28 @@ var runSearch = function () {
 	}).then (function(answer){
 		switch (answer.action) {
 			case "View Products for Sale":
-				// console.log("user wants to View Products for Sale");
 				productsForSale();
 				break;
+
 			case "View Low Inventory":
-				// console.log("user wants to View Low Inventory");
 				lowInventory();
 				break;
+
 			case "Add to Inventory":
-				// console.log("user wants to Add to Inventory");
 				addInventory();
 				break;
+
 			case "Add New Product":
-				// console.log("user wants to Add New Product");
 				addProduct();
-				// addStuff();
 				break;
 		}
 	});
 };
 
 
-//search functions
+//List of functions for each of the above options
+
+//View Products for Sale function: allows user to see a list of all available products for sale
 
 var productsForSale = function () {
 
@@ -66,6 +68,8 @@ var productsForSale = function () {
 
 };
 
+
+//View low inventory  function: allows user to see a list of all products where the stock amount is less than five
 
 var lowInventory = function () {
 
@@ -85,10 +89,12 @@ var lowInventory = function () {
 };
 
 
+//Add Inventory function: allows user update inventory of products for sale
 
 var addInventory = function () {
 
     connection.query("SELECT id, product_name, stock_quantity FROM products", function(error, response) {
+
 
 
     	var productId = response[0].id;
@@ -125,6 +131,7 @@ var addInventory = function () {
 
 };
 
+//Add Product: allows user to see add product to database
 
 var addProduct = function () {
 
@@ -153,22 +160,19 @@ var addProduct = function () {
 		    	var price = parseInt(answer.price);
 		    	var stock = parseInt(answer.stock);
 
-		    	console.log (newProduct);
-		    	console.log (department);
-		    	console.log (price);
-		    	console.log (stock);
 
-		    	connection.query('INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ?' [
-	                    {product_name: newProduct},
-	                    {department_name: department},
-	                    {price: price},
-	                    {stock_quantity: stock}], 
+		    	connection.query('INSERT INTO products SET ?', 
+	                    {product_name: newProduct,
+	                    department_name: department,
+	                    price: price,
+	                    stock_quantity: stock}, 
 
 	                    function(error, response){
-	                    	if(err) {
-						        console.log(err);
+	                    	if(error) {
+						        console.log(error);
 						    } 
-	                    	console.log(response);
+						    console.log ("Inventory has been updated to add " + newProduct);
+	                    	// console.log(response);
 	        			}); 
 
 	    	});
