@@ -4,5 +4,7 @@ An Amazon-like storefront created with the MySql server. It takes in customer or
 
 
 
-Inline-style: 
-![alt text](https://github.com/mstorino/bamazon/bamazonImg/bamazonCustomerCast.gif "Customer Gif")
+
+
+
+<img src="../bamazonImg/bamazonCustomerCast.gif">
