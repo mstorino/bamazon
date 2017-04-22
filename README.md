@@ -13,3 +13,4 @@ A screencast of the user's interaction with the database is available here:
 #Manager Database Interaction
 A screencast of the manager's interaction with the database is available here:
 
+![blamazon customer view](./bamazonImg/bamazonManagerScreencast.gif)
