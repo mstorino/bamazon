@@ -18,7 +18,7 @@ connection.connect(function(err){
    
     // if no error display products & properties
 
-    buyerSearch();
+   productList();
 });
 
 //function that displays products
@@ -30,17 +30,18 @@ var productList = function () {
         for (var i = 0; i < response.length; i++) {
             console.log(response[i].id + ": " + response[i].product_name + " | " + response[i].department_name + " | $" + response[i].price);
         };
+
+        //function that allows user to identify the product and quantity of the product he wants to buy
+        buyerSearch();
     });
 
 };
 
-//function that prompts users with two messages
+//function that prompts users with two questions using Inquirer CDN
 
 var buyerSearch = function () {
 
-    productList();
-
-    //identify the product and quanity that the user wants to buy
+    //QUESTION1: identify the product and quanity that the user wants to buy
     inquirer.prompt([{
         name: "productId",
         type: "input",
@@ -79,7 +80,7 @@ var buyerSearch = function () {
                         });
 
             } else {
-                console.log ("there isn't enough stock")
+                console.log ("there isn't enough stock");
             }
 
         });
@@ -87,7 +88,3 @@ var buyerSearch = function () {
     }); 
 
 };
-
-
-// buyerSearch();
-

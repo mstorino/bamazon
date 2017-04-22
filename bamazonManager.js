@@ -53,7 +53,7 @@ var runSearch = function () {
 
 //List of functions for each of the above options
 
-//View Products for Sale function: allows user to see a list of all available products for sale
+//CASE 1: View Products for Sale function – allow user to see a list of all available products for sale
 
 var productsForSale = function () {
 
@@ -64,12 +64,12 @@ var productsForSale = function () {
         };
     });
 
-    //runSearch(); this is functioning weird
+    runSearch(); 
 
 };
 
 
-//View low inventory  function: allows user to see a list of all products where the stock amount is less than five
+//CASE 2: View low inventory function – allow user to see a list of all products where the stock amount is less than five
 
 var lowInventory = function () {
 
@@ -85,53 +85,62 @@ var lowInventory = function () {
 
 
     });
-
+    runSearch(); 
 };
 
 
-//Add Inventory function: allows user update inventory of products for sale
+//CASE 3: Add Inventory function – allow user to update inventory of products for sale
 
 var addInventory = function () {
 
-    connection.query("SELECT id, product_name, stock_quantity FROM products", function(error, response) {
+    connection.query("SELECT product_name, stock_quantity FROM products", function(error, response) {
+    	// var productNameArray = response.map(function(item) {
+    	// 	return item.product_name;
+    	// })
 
+    	//create empty array to store products
 
+    	var productNameArray = [];
 
-    	var productId = response[0].id;
-    	var productName = response[0].product_name;
-    	var productQuantity = response[0].stock_quantity;
-
-
+    	for (var i = 0; i < response.length; i++) {
+	       	var productName = response[i].product_name;
+	       	productNameArray.push(productName);
+	    } 
+	       
+		//Ask user to select product and set new inventory amount.
 
 		inquirer.prompt([{
 	        name: "productToUpdate",
 	        type: "list",
-	        message: "What would you like to add?",
-	        choices: [productName]
+	        message: "What would you like to update?",
+	        choices: productNameArray
+	       
 	    }, {
 	    	name: "productQuanityToAdd",
 	    	type: "input",
-	    	message: "how much would you like to add?"
+	    	message: "What is the total amount of the item that you want in stock?"
 	    } ]).then (function(answer){
-	    	var amountToAdd = parseInt(answer.productQuanityToAdd);
-	    	var newStockQuantity = amountToAdd + productQuantity;
 
-	    	// console.log(newStockQuantity);
-	    	 connection.query("UPDATE products SET ? WHERE ?", [
-                    {stock_quantity: newStockQuantity},
-                    {id: productId}], function(error, response) {
-                        console.log("Item # " + productId + " has been updated in the Database. The new inventory quantity for " + productName + " is " + newStockQuantity + " units.");
-                        });
-
+	    	//take user's answer and convert it to an integer
+	    	var newStockQuantity = parseInt(answer.productQuanityToAdd);
 	    	
+	    	//upate stock_quantity in the database and when it's update console.log update
+	    	connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: newStockQuantity}, {product_name: answer.productToUpdate}], function(error, response) {
+                console.log(answer.productToUpdate + " has been updated in the Database. The new inventory quantity is " + newStockQuantity + " units.");
+                runSearch(); 
+             });
+	    	
+
 	    });
 
 
     });
 
+
+
 };
 
-//Add Product: allows user to see add product to database
+//CASE 4: Add Product – allow user to see add product to database
 
 var addProduct = function () {
 
@@ -173,16 +182,9 @@ var addProduct = function () {
 						    } 
 						    console.log ("Inventory has been updated to add " + newProduct);
 	                    	// console.log(response);
+	        			runSearch(); 
 	        			}); 
 
 	    	});
 };
-
-// var addStuff = function(){
-// 	connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('cheese', 'grocery', 10, 4)", 
-// 		function(error, response){
-//                         console.log("added to Database");
-//         }); 
-	
-// }
 
