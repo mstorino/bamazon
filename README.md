@@ -5,7 +5,9 @@ An Amazon-like storefront created with the MySql server. It takes in customer or
 
 #Customer Database Interaction
 A screencast of the user's interaction with the database is available here:
-<img src="../bamazonImg/bamazonCustomerCast.gif">
+
+![blamazon customer view](../bamazonImg/bamazonCustomerCast.gif)
+
 
 
 #Manager Database Interaction
